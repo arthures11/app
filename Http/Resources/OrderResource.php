@@ -42,16 +42,16 @@ class OrderResource extends JsonResource
             'total_products' => $this->processProducts($this),
             'shipping_first_name' => isset($this['client']['shippingFirstName']) ? (string)$this['client']['shippingFirstName'] : null,
             'shipping_last_name'=> isset($this['client']['shippingLastName']) ? (string)$this['client']['shippingLastName'] : null,
-            'shipping_company'=> isset($this['client']['shippingCompany']) ? (string)$this['client']['shippingCompany'] : null,
-            'shipping_street'=> isset($this['client']['shippingStreet']) ? (string)$this['client']['shippingStreet'] : null,
+            'shipping_company'=> isset($this['client']['shippingCompany']) ? $this['client']['shippingCompany'] : null,
+            'shipping_street'=> isset($this['client']['shippingStreet']) ? $this['client']['shippingStreet'] : null,
             'shipping_street_number_1'=> isset($this['client']['shippingStreetNumber1']) ? $this['client']['shippingStreetNumber1'] : null,
             'shipping_street_number_2'=> isset($this['client']['shippingStreetNumber2']) ?  $this['client']['shippingStreetNumber2'] : null,
-            'shipping_post_code'=> isset($this['client']['shippingPostCode']) ? (string)$this['client']['shippingPostCode'] : null,
-            'shipping_city'=> isset($this['client']['shippingCity']) ? (string)$this['client']['shippingCity'] : null,
-            'shipping_state_code'=> isset($this['client']['shippingStateCode']) ? (string)$this['client']['shippingStateCode'] : null,
-            'shipping_state'=> isset($this['client']['shippingState']) ? (string)$this['client']['shippingState'] : null,
-            'shipping_country_code'=> isset($this['client']['shippingCountryCode']) ? (string)$this['client']['shippingCountryCode'] : null,
-            'shipping_country'=> isset($this['client']['shippingCountry']) ? (string)$this['client']['shippingCountry'] : null,
+            'shipping_post_code'=> isset($this['client']['shippingPostCode']) ? $this['client']['shippingPostCode'] : null,
+            'shipping_city'=> isset($this['client']['shippingCity']) ? $this['client']['shippingCity'] : null,
+            'shipping_state_code'=> isset($this['client']['shippingStateCode']) ? $this['client']['shippingStateCode'] : null,
+            'shipping_state'=> isset($this['client']['shippingState']) ? $this['client']['shippingState'] : null,
+            'shipping_country_code'=> isset($this['client']['shippingCountryCode']) ? $this['client']['shippingCountryCode'] : null,
+            'shipping_country'=> isset($this['client']['shippingCountry']) ? $this['client']['shippingCountry'] : null,
         ];
         if($order['total_products']>0){
             $order['products'] = $this->processProduct($this);
@@ -73,13 +73,7 @@ class OrderResource extends JsonResource
     public function toArray($request): array
     {
         error_log("test");
-//        $client = new SoapClient('http://unlimitech.atomstore.pl/atom_api/wsdl/atom_api');
-//        $authenticate = array('login' => 'backdev-konrad', 'password' => 'nJqvXk4qEaUdIEo.22');
-//        header('Content-Type: application/xml');
-//        $response = $client->GetOrders($authenticate);
-//        $xml = simplexml_load_string($response);
 
-//        return view('dashboard', ['orders' => $orders]);
         $orders = [];
         error_log("test2");
         error_log((string)$this[2]['id']);
