@@ -85,7 +85,7 @@ class OrderController extends Controller
 
         return response()->json(['order' => $array]);
         }
-        catch (Exception $e) {
+        catch (\Throwable $e) {
             error_log($e);
             //    return redirect()->back()->withErrors(['error' => 'Something went wrong: ' . $e->getMessage()]);
 
@@ -160,7 +160,7 @@ class OrderController extends Controller
         try {
             $page = $request->query('page');
             $perPage = $request->query('per_page', 5);
-            error_log("dupa $perPage");
+            error_log("d:: $perPage");
 
             $service = new OrderService();
 
@@ -194,7 +194,7 @@ class OrderController extends Controller
                 return response()->json(['orders' => $array]);
             }
         }
-         catch (Exception $e) {
+         catch (\Throwable $e) {
             error_log($e);
          //    return redirect()->back()->withErrors(['error' => 'Something went wrong: ' . $e->getMessage()]);
 
