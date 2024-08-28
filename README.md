@@ -4,7 +4,7 @@
 
 App provides 2 types of users - Employee and Admin whose get different API results.
 
-## ℹ️ API examples:
+## ℹ️ API example results:
 - /orders api example as an Admin:
 ![image](https://github.com/user-attachments/assets/67179117-78e0-4a4b-8633-6acd9a9b3bcc)
 ![image](https://github.com/user-attachments/assets/3fbe14f9-0898-4b04-8d04-91906086cf55)
