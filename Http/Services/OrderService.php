@@ -34,10 +34,6 @@ class OrderService
         $xmlObject = simplexml_load_string($responseArray[0], "SimpleXMLElement", LIBXML_NOCDATA);
 
         error_log('here2');
-        if ($xmlObject === false) {
-            error_log('Failed to parse XML string');
-            return response()->json(['error' => 'Something went wrong'], 404);
-        }
 
         try {
            // error_log('here3');
@@ -81,13 +77,9 @@ class OrderService
 
         $xmlObject = simplexml_load_string($responseArray[0], "SimpleXMLElement", LIBXML_NOCDATA);
 
-        if ($xmlObject === false) {
-            error_log('Failed to parse XML string');
-            return response()->json(['error' => 'Something went wrong'], 404);
-        }
 
         if(count($xmlObject)==0){
-            return response()->json(['error' => 'Order not found'], 404);
+            throw new OrderNotFoundException("Invalid order ID", 404);
         }
 
         $data = json_decode(json_encode($xmlObject), true);
