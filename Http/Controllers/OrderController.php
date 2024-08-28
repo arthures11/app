@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Http\Resources\OrderResource;
 use App\Http\Services\OrderService;
+use App\Exceptions\OrderNotFoundException;
 use SoapClient;
 use SimpleXMLElement;
 use Exception;
@@ -73,6 +74,17 @@ class OrderController extends Controller
      */
     public function getOrderById($id, Request $request)
     {
+//        if($id<=0){
+//            return response()->json([
+//                'error' => 'Something went wrong',
+//                'message' => 'Wrong ID.',
+//            ], 500);
+//        }
+
+//        $request->validate([
+//            'id' => 'required|integer',
+//        ]);
+
         try{
         $service = new OrderService();
 
