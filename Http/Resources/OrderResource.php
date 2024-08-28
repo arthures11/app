@@ -76,8 +76,7 @@ class OrderResource extends JsonResource
 
         $orders = [];
         error_log("test2");
-        error_log((string)$this[2]['id']);
-        error_log("test33");
+        //error_log((string)$this[2]['id']);
 
         for ($i = 0; $i < $this->count(); $i++) {
             $processedOrder = [

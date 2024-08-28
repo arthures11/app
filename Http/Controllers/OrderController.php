@@ -8,6 +8,7 @@ use App\Http\Resources\OrderResource;
 use App\Http\Services\OrderService;
 use SoapClient;
 use SimpleXMLElement;
+use Exception;
 
 /**
  * @OA\Info(
@@ -72,6 +73,7 @@ class OrderController extends Controller
      */
     public function getOrderById($id, Request $request)
     {
+        try{
         $service = new OrderService();
 
         $data = $service->getOrderById($id);
@@ -82,7 +84,17 @@ class OrderController extends Controller
 
 
         return response()->json(['order' => $array]);
+        }
+        catch (Exception $e) {
+            error_log($e);
+            //    return redirect()->back()->withErrors(['error' => 'Something went wrong: ' . $e->getMessage()]);
 
+            return response()->json([
+                'error' => 'Something went wrong',
+                'message' => $e->getMessage(),
+            ], 500);
+
+        }
 
     }
 
@@ -91,6 +103,20 @@ class OrderController extends Controller
      *     path="/api/v1/orders",
      *     summary="Get all orders",
      *     tags={"Orders"},
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="page number",
+     *         required=false,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         name="per_page",
+     *         in="query",
+     *         description="number of items in page",
+     *         required=false,
+     *         @OA\Schema(type="integer")
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Successful operation",
@@ -112,6 +138,14 @@ class OrderController extends Controller
      *                     @OA\Property(property="paid", type="number", format="float"),
      *                     @OA\Property(property="username", type="string", nullable=true)
      *                 )
+     *             ),
+     *             @OA\Property(
+     *                 property="meta",
+     *                 type="object",
+     *                 @OA\Property(property="current_page", type="integer"),
+     *                 @OA\Property(property="per_page", type="integer"),
+     *                 @OA\Property(property="total", type="integer"),
+     *                 @OA\Property(property="total_pages", type="integer")
      *             )
      *         )
      *     ),
@@ -123,14 +157,54 @@ class OrderController extends Controller
      */
     public function getAll(Request $request)
     {
-        $service = new OrderService();
+        try {
+            $page = $request->query('page');
+            $perPage = $request->query('per_page', 5);
+            error_log("dupa $perPage");
 
-        $data = $service->getAll();
+            $service = new OrderService();
 
-        $res = new OrderResource(collect($data['order']));
+            if ($page != null) {
+                $data = $service->getAllPaged($page, $perPage);
+                //error_log($data['order'][0]['id']);
+                $res = new OrderResource(collect($data['order']));
 
-        $array = $res->toArray($request);
+                $array = $res->toArray($request);
 
-        return response()->json(['orders' => $array]);
+                $result = [
+                    'orders' => $array,
+                ];
+                $totalOrders = count($data['order']);
+                $totalPages = ceil($totalOrders / $perPage);
+
+                $result['meta'] = [
+                    'current_page' => (int)$page,
+                    'per_page' => (int)$perPage,
+                    'total' => $totalOrders,
+                    'total_pages' => $totalPages,
+                ];
+
+                return response()->json($result);
+            } else {
+                $data = $service->getAll();
+                $res = new OrderResource(collect($data['order']));
+
+                $array = $res->toArray($request);
+
+                return response()->json(['orders' => $array]);
+            }
+        }
+         catch (Exception $e) {
+            error_log($e);
+         //    return redirect()->back()->withErrors(['error' => 'Something went wrong: ' . $e->getMessage()]);
+
+             return response()->json([
+                 'error' => 'Something went wrong',
+                 'message' => $e->getMessage(),
+             ], 500);
+
+         }
+
+
     }
 }

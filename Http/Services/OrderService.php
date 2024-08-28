@@ -6,14 +6,8 @@ use App\Models\Order;
 use App\Http\Resources\OrderResource;
 use SoapClient;
 use SimpleXMLElement;
+use function Laravel\Prompts\error;
 
-/**
- * @OA\Info(
- *     title="Orders API",
- *     version="1.0.0",
- *     description="simple api for retrieving all orders and specific order information"
- * )
- */
 
 class OrderService
 {
@@ -78,6 +72,50 @@ class OrderService
         }
 
         $data = json_decode(json_encode($xmlObject), true);
+
+
+        return $data;
+    }
+
+
+    public function getAllPaged($page = null, $perPage = null)
+    {
+        $totalOrders = $page * $perPage;
+
+        $client = new SoapClient('http://unlimitech.atomstore.pl/atom_api/wsdl/atom_api');
+        $authenticate = array('login' => 'backdev-konrad', 'password' => 'nJqvXk4qEaUdIEo.22');
+        $response = $client->GetOrdersSpecified($authenticate, '', 0, $totalOrders, 0, '', '', '');
+        error_log("asdasdasd $totalOrders");
+        header('Content-Type: application/xml');
+        if ($response instanceof \SimpleXMLElement) {
+            $responseArray = json_decode(json_encode($response), true);
+        } else {
+            $responseArray = (array) $response;
+        }
+
+
+
+        $xmlObject = simplexml_load_string($responseArray[0], "SimpleXMLElement", LIBXML_NOCDATA);
+
+        if ($xmlObject === false) {
+            error_log('Failed to parse XML string');
+            return response()->json(['error' => 'Something went wrong'], 404);
+        }
+
+        if(count($xmlObject)==0){
+            return response()->json(['error' => 'Order not found'], 404);
+        }
+
+        $data = json_decode(json_encode($xmlObject), true);
+
+        if (isset($data['order']['id'])) {
+            $data['order'] = [$data['order']];
+        }
+
+        if ($page !== null && $perPage !== null) {
+            $offset = ($page - 1) * $perPage;
+            $data['order'] = array_slice($data['order'], $offset, $perPage);
+        }
 
 
         return $data;
