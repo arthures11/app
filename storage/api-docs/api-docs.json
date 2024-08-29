@@ -1,0 +1,265 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Orders API",
+        "description": "simple api for retrieving all orders and specific order information",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/v1/orders/{id}": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Get order by ID",
+                "operationId": "029937f512de789424c8d2cdf3f6aa2f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Order ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "order": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "external_id": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "confirmed": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "True",
+                                                        "False"
+                                                    ]
+                                                },
+                                                "shipping_method": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "total_products": {
+                                                    "type": "integer"
+                                                },
+                                                "shipping_first_name": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "shipping_last_name": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "shipping_company": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "shipping_street": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "shipping_street_number_1": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "shipping_street_number_2": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "shipping_post_code": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "shipping_city": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "shipping_state_code": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "shipping_state": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "shipping_country_code": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "shipping_country": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "products": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object"
+                                                    },
+                                                    "nullable": true
+                                                },
+                                                "currency": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "order_sum": {
+                                                    "type": "number",
+                                                    "format": "float"
+                                                },
+                                                "paid": {
+                                                    "type": "number",
+                                                    "format": "float"
+                                                },
+                                                "username": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Order not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/orders": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Get all orders",
+                "operationId": "78f00f471f4533844a6e27586a3e10e4",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "number of items in page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "orders": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string"
+                                                    },
+                                                    "external_id": {
+                                                        "type": "string",
+                                                        "nullable": true
+                                                    },
+                                                    "confirmed": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "True",
+                                                            "False"
+                                                        ]
+                                                    },
+                                                    "shipping_method": {
+                                                        "type": "string",
+                                                        "nullable": true
+                                                    },
+                                                    "total_products": {
+                                                        "type": "integer"
+                                                    },
+                                                    "products": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "object"
+                                                        },
+                                                        "nullable": true
+                                                    },
+                                                    "currency": {
+                                                        "type": "string",
+                                                        "nullable": true
+                                                    },
+                                                    "order_sum": {
+                                                        "type": "number",
+                                                        "format": "float"
+                                                    },
+                                                    "paid": {
+                                                        "type": "number",
+                                                        "format": "float"
+                                                    },
+                                                    "username": {
+                                                        "type": "string",
+                                                        "nullable": true
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer"
+                                                },
+                                                "per_page": {
+                                                    "type": "integer"
+                                                },
+                                                "total": {
+                                                    "type": "integer"
+                                                },
+                                                "total_pages": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No orders have been found."
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Orders",
+            "description": "Orders"
+        }
+    ]
+}
